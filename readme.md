@@ -1,23 +1,28 @@
-Broken Session Replication
-==============
+Test cluster glassfish 4.1 avec vagrant
+=========
+Attention replication de session non fonctionnel / Broken Session Replication
+-------
+
 Les replications de session ne fonctionnent pas     .
 
 Ceci est un projet de test de cluster glassfish 4.1 avec 2 machines hebergeant chacune une instance.
 
-Si vous changez les Ip dans le ``vagrantfile``` pensez a éditer le fichier  ``installation\scripts\commun\environnement_configuration``
+Si vous changez les Ip dans le ``vagrantfile`` pensez a Ã©diter le fichier  ``installation\scripts\commun\environnement_configuration``
 
 Installation
 =====
+
 lancer les machines et la provision
------
+
   
   $``vagrant up``
 
 
-Une fois les machines glassfish1 et glassfish2 provisionnées, finaliser la création du cluster sur la machine ``glassfish1``   
------
+Une fois les machines glassfish1 et glassfish2 provisionnÃ©es, finaliser la crÃ©ation du cluster sur la machine ``glassfish1``   
+
   
   $``vagrant ssh glassfish1``
+  
   [vagrant@machine ~]$ ``sudo sh /vagrant/installation/scripts/glassfish1/10-glassfish1_finalisation.sh``
   
   
@@ -25,7 +30,7 @@ Ouvrer votre navigateur et connectez vous a l'adresse http://169.254.129.101:484
 
 Connecter vous avec le user admin, password : adminadmin
 
-Dans applications deployer le war  ``clusterjsp.war`` en  cochant ``availabity`` et en choissisant la target ``c1``
+Dans applications deployer le war  ``clusterjsp.war`` en  cochant ``availability`` et en choissisant la target ``c1``
 
 Ouvrez les logs du servers
 
