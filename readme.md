@@ -40,6 +40,10 @@ Ouvrez les logs du servers
 381 	INFO 	uploadFileName=clusterjsp.war(details) 	org.glassfish.admingui 	18 janv. 2016 17:37:54.536 	{levelValue=800, timeMillis=1453138674536}
 380 	INFO 	GUI deployment: uploadToTempfile(details) 	org.glassfish.admingui 	18 janv. 2016 17:37:54.518 	{levelValue=800, timeMillis=1453138674518}
 
+**================== availabilityEnabled skipped(details)**, le détail ne m'apprends rien de plus le texte est tout simplement identique.
+
+...
+
  A terme il doit y avoir un apache en load balancing.
 
 
