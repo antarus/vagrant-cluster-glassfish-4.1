@@ -1,0 +1,76 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  #config.vm.box = "centos-6.6-minimal"
+  #config.vm.box_url = "http://221.11.148.132/vagrant/boxes/centos-6.6-minimal.box"
+  config.vm.box = "nrel/CentOS-6.7-x86_64 v1.0.0"
+  config.vm.box_url = "https://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.7-x86_64-v20151108.box"
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
+  #config.ssh.password = "password"
+
+  ## config cache
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+    config.cache.auto_detect = true
+    #config.cache.enable :apt
+    config.cache.enable :yum
+    config.cache.enable :generic, {
+      "wget" => { cache_dir: "/var/cache/wget" },
+    }
+  end
+
+
+
+  # configuration machine glassfish1
+  config.vm.define "glassfish1" do |glassfish1|
+    glassfish1.vm.provision :shell, :path =>  "installation/scripts/glassfish1/04-glassfish1_init.sh"
+   # glassfish1.vm.network "private_network", ip: "192.168.56.101"
+    glassfish1.vm.network "private_network", ip: "169.254.129.101", :netmask => "255.255.0.0"
+    # configuration virtualbox spécifique a cette VM
+    glassfish1.vm.provider "virtualbox" do |v|
+      v.name = "glassfish1"
+    end
+  end
+
+  # configuration machine glassfish2
+  config.vm.define "glassfish2" do |glassfish2|
+    glassfish2.vm.provision :shell, :path => "installation/scripts/glassfish2/06-glassfish2_init.sh"
+    #glassfish2.vm.network "private_network", ip: "192.168.56.102"
+    glassfish2.vm.network "private_network", ip: "169.254.129.102", :netmask => "255.255.0.0"
+    # configuration virtualbox spécifique a cette VM
+    glassfish2.vm.provider "virtualbox" do |v|
+      v.name = "glassfish2"
+    end
+  end
+
+
+
+  # configuration VM commune
+  config.vm.provider "virtualbox" do |v|
+    # Don't boot with headless mode
+    v.gui = false
+    # Use VBoxManage to customize the VM. For example to change memory:
+    v.customize ["modifyvm", :id, "--memory",               "1024"]
+    v.customize ["modifyvm", :id, "--cpus", "2"]
+    v.customize ["modifyvm", :id, "--cpuexecutioncap",      "95"]
+    v.customize ["modifyvm", :id, "--natdnshostresolver1",  "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1",         "on"]
+  end
+
+
+  # script de provision commun
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+  # centos 7
+  #config.vm.provision "shell", run: "always", inline: "ip route add 224.0.0.0/4 dev enp0s8"
+  # centos 6
+  config.vm.provision "shell", run: "always", inline: "route add -net 224.0.0.0 netmask 240.0.0.0 dev eth1"
+  #config.vm.provision "shell", inline: "if [ -f \"/etc/yum.repos.d/CentOS-Base.repo.bak\" ];then  sudo mv /etc/yum.repos.d/CentOS-Base.repo.bak /etc/yum.repos.d/CentOS-Base.repo; fi"
+  #config.vm.provision "shell", inline: "if [ -f \"/etc/yum.repos.d/decos.repo\" ];then sudo rm /etc/yum.repos.d/decos*.repo; fi"
+  config.vm.provision :shell, :path =>  "installation/scripts/commun/01-provision_commun.sh"
+
+end
