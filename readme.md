@@ -1,6 +1,6 @@
 Test cluster glassfish 4.1 avec vagrant
 =========
-Attention replication de session non fonctionnel / Broken Session Replication
+Attention replication de session non fonctionnelle / Broken Session Replication
 -------
 
 Les replications de session ne fonctionnent pas     .
